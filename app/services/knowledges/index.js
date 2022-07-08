@@ -41,6 +41,7 @@ module.exports = async function (fastify, opts, next) {
       ON pr.progress_report_id = pro.progress_report_id
         WHERE outcome_knowledge_name is not null`
     );
+    connection.release();
 
     let concept_proposal_id = [];
     let project_id = [];
@@ -66,6 +67,7 @@ module.exports = async function (fastify, opts, next) {
                   WHERE concept_proposal.concept_proposal_id = ${cciq[i]} AND co_concept_fk.area_status = 1`
         );
         // const data = helper.emptyOrRows(locations);
+        connection.release();
         rows.map((listvalue) =>
           concept_proposal_locations.push({
             concept_proposal_id: listvalue.concept_proposal_id,
@@ -99,6 +101,7 @@ module.exports = async function (fastify, opts, next) {
             WHERE progress_report.concept_proposal_id = ${cciq[i]}
             `
         );
+        connection.release();
 
         // knowledgedata = knowledge;
 
@@ -121,6 +124,7 @@ module.exports = async function (fastify, opts, next) {
               WHERE progress_report.concept_proposal_id = ${cciq[i]}
               `
         );
+        connection.release();
         rows.map((listvalue) => Innovationdata.push(listvalue));
       } catch (error) {
         console.log(error);
@@ -159,6 +163,7 @@ module.exports = async function (fastify, opts, next) {
             INNER JOIN concept_proposal cp
           ON cp.concept_proposal_id = ccf.concept_proposal_id
             WHERE ccf.concept_proposal_id = ${conceptid[i]}`);
+      connection.release();
 
       rows.map((val) =>
         co_locations.push({
